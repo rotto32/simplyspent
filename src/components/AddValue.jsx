@@ -6,7 +6,11 @@ function AddValue(props) {
     <div>
       <h2>Add Value</h2>
       <form>
-        
+        {'Cost: $'}
+        <input type="number" name="cost" onChange={props.handleFormChange}/>
+        {'Description:'}
+        <input type="text" name="desc" />
+        <input type="submit" value="Submit" />
       </form>
     </div>
   );

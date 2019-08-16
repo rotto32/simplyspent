@@ -8,7 +8,6 @@ class Main extends React.PureComponent {
   constructor() {
     super();
     this.state = {
-      currentDate: Date.now(),
       dailyTotal: 45,
       weeklyTotal: 345,
       monthlyTotal: 453,
@@ -17,8 +16,11 @@ class Main extends React.PureComponent {
         { date: '1/1/19', cost: 2, description: 'coffee' },
       ],
       yearlyTotal: 1000,
+      cost: 0,
+      desc: '',
     };
     this.calculateTotal = this.calculateTotal.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +46,13 @@ class Main extends React.PureComponent {
       weeklyTotal: wTotal,
       monthlyTotal: mTotal,
       yearlyTotal: yTotal,
+    });
+  }
+
+  handleFormChange(e) {
+    console.log(e.target.value, e.target.name);
+    this.setState({
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -90,7 +99,7 @@ class Main extends React.PureComponent {
             </div>
           </div>
         </div>
-        <AddValue />
+        <AddValue handleFormChange={this.handleFormChange} />
         <PurchaseSummary calculateTotal={this.state.calculateTotal} />
       </div>
     );
