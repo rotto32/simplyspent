@@ -9,31 +9,32 @@ class Main extends React.PureComponent {
     super();
     this.state = {
       dailyTotal: 45,
-      weeklyTotal: 345,
-      monthlyTotal: 453,
+      weeklyTotal: 100,
+      monthlyTotal: 100,
       dailyPurchases: [
         { date: '1/1/19', cost: 1, description: 'banana' },
         { date: '1/1/19', cost: 2, description: 'coffee' },
       ],
       yearlyTotal: 1000,
       cost: 0,
-      desc: '',
+      desc: ' ',
     };
     this.calculateTotal = this.calculateTotal.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
     this.calculateTotal(this.state.dailyPurchases);
   }
 
-  calculateTotal(arr) {
+  calculateTotal() {
     let dTotal = this.state.dailyTotal;
     let wTotal = this.state.weeklyTotal;
     let mTotal = this.state.monthlyTotal;
     let yTotal = this.state.yearlyTotal;
 
-    arr.map((el) => {
+    this.state.dailyPurchases.map((el) => {
       dTotal += el.cost;
     });
 
@@ -54,6 +55,19 @@ class Main extends React.PureComponent {
     this.setState({
       [e.target.name]: e.target.value,
     });
+  }
+
+  handleFormSubmit(e) {
+    e.preventDefault();
+    // once backend is built will post to db and then update daily purchases
+    const newDailyPurchases = this.state.dailyPurchases;
+    newDailyPurchases.push(
+      { date: Date.now(), cost: Number(this.state.cost), description: this.state.desc },
+    );
+    // console.log(newDailyPurchases);
+    this.setState({
+      dailyPurchases: newDailyPurchases,
+    }, this.calculateTotal);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -99,7 +113,7 @@ class Main extends React.PureComponent {
             </div>
           </div>
         </div>
-        <AddValue handleFormChange={this.handleFormChange} />
+        <AddValue handleFormChange={this.handleFormChange} handleFormSubmit={this.handleFormSubmit} />
         <PurchaseSummary calculateTotal={this.state.calculateTotal} />
       </div>
     );
